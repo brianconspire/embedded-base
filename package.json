@@ -7,7 +7,7 @@
   },
   "scripts": {
     "test": "jest",
-    "dev": "cross-env NODE_ENV=development nodemon ./server/index.js --watch server",
+    "dev": "NODE_ENV=development ts-node server/server.ts",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build",
     "start": "cross-env NODE_ENV=production node ./server/index.js"
   },

@@ -1,16 +1,13 @@
 import { Session } from "@shopify/shopify-api/dist/auth/session";
-const { MongoClient } = require('mongodb');
+import { MongoClient } from "mongodb";
 
-const uri = process.env.DATABASE
-client = new MongoClient(uri);
+const uri = process.env.DATABASE;
 
-let db;
-let client;
-
+let client = new MongoClient(uri);
 client.connect();
-db = client.db('app')
+let db = client.db("app");
 
-async function getDB() {
+export async function getDB() {
     return db;
 }
 
@@ -20,41 +17,43 @@ async function getDB() {
     If the session can be stored, return true
     Otherwise, return false
   */
-const storeCallback = async (session) => {
+export const storeCallback = async (session) => {
     try {
         console.log("storeCallback ");
-        if(session){
-            console.log('storeCallback session')
-            const result = await db.collection('shops').updateOne(
-                { shop: session.shop },
-                { $set: session },
-                { upsert: true }
-            )
-            
+        if (session) {
+            console.log("storeCallback session");
+            const result = await db
+                .collection("shops")
+                .updateOne(
+                    { shop: session.shop },
+                    { $set: session },
+                    { upsert: true }
+                );
+
             return true;
-        }else{
-            console.log('no session in storecallback')
+        } else {
+            console.log("no session in storecallback");
             return false;
         }
     } catch (err) {
         throw new Error(err);
     }
-}
+};
 /*
     The loadCallback takes in the id, and uses the getAsync method to access the session data
      If a stored session exists, it's parsed and returned
      Otherwise, return undefined
   */
-async function loadCallback(id) {
+export async function loadCallback(id) {
     // Inside our try, we use `getAsync` to access the method by id
     // If we receive data back, we parse and return it
     // If not, we return `undefined`
-    console.log('loadCallback')
+    console.log("loadCallback");
     try {
         //const db = await getDB();
-        const result = await db.collection('shops').findOne()
+        const result = await db.collection("shops").findOne();
         if (result) {
-            return Object.assign(new Session(), result);
+            return Object.assign(new Session(id), result);
         } else {
             return undefined;
         }
@@ -67,9 +66,9 @@ async function loadCallback(id) {
     If the session can be deleted, return true
     Otherwise, return false
   */
-async function deleteCallback(id) {
+export async function deleteCallback(id) {
     try {
-        const result = await db.collection('shops').deleteOne({ id: id })
+        const result = await db.collection("shops").deleteOne({ id: id });
         if (result) {
             // Inside our try, we use the `delAsync` method to delete our session.
             // This method returns a boolean (true if successful, false if not)
@@ -77,13 +76,7 @@ async function deleteCallback(id) {
         } else {
             return false;
         }
-    } catch(err){
+    } catch (err) {
         throw new Error(err);
     }
-    
 }
-
-module.exports = { getDB, storeCallback, loadCallback, deleteCallback }
-
-
-

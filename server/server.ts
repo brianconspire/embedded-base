@@ -76,7 +76,7 @@ app.prepare().then(async () => {
   router.post("/webhooks", async (ctx) => {
     try {
       console.log("received a webhook");
-      if (!Shopify.Webhooks.Registry.webhookRegistry.length > 0) {
+      if (!(Shopify.Webhooks.Registry.webhookRegistry.length > 0)) {
         console.log("need to set registered webhooks TODO HACKY SOLUTION");
         await setShopifyWebhookRegistry(ctx.req);
       }
