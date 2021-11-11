@@ -1,9 +1,9 @@
 {
-  "name": "draft-order-invoice",
+  "name": "embedded-base",
   "version": "1.0.0",
   "description": "Embedded app for Shopify",
   "engines": {
-    "node": "16.7.0"
+    "node": "16.13.0"
   },
   "scripts": {
     "test": "jest",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Shopify/shopify-app-node.git"
+    "url": "git+https://github.com/brianconspire/embedded-base.git"
   },
   "author": "Conspire LLC",
   "license": "All rights reserved Conspire LLC",
